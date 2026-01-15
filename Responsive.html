@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Landing Page</title>
+
+    <style>
+       
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+       
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 30px;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.4s;
+            z-index: 1000;
+        }
+
+        nav.scrolled {
+            background-color: #1e1e2f;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        nav h2 {
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+        }
+
+        ul li {
+            margin-left: 20px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 12px;
+            transition: 0.3s;
+        }
+
+        ul li a:hover {
+            background-color: #ff9800;
+            color: black;
+            border-radius: 5px;
+        }
+
+        
+        .hero {
+            height: 100vh;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+        }
+
+        .hero p {
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+
+        
+        .content {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .content h2 {
+            margin-bottom: 20px;
+        }
+
+       
+        @media (max-width: 768px) {
+            ul {
+                flex-direction: column;
+                background-color: #1e1e2f;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 200px;
+                display: none;
+            }
+
+            ul.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <h2>MyWebsite</h2>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div>
+            <h1>Welcome to Our Landing Page</h1>
+            <p>Responsive | Interactive | Simple Design</p>
+        </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="content" id="about">
+        <h2>About Us</h2>
+        <p>Our moto is to make a web page with more attractive creatives.</p>
+    </section>
+
+    <section class="content" id="services">
+        <h2>Our Services</h2>
+        <p>Web Design, Development, and Responsive Layouts</p>
+    </section>
+
+    <section class="content" id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: info@gmail.com</p>
+    </section>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        window.addEventListener("scroll", function () {
+            const navbar = document.getElementById("navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    </script>
+
+</body>
+</html>
