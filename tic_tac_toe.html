@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1e1e2f;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .game {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: #2c2c3c;
+            font-size: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .cell:hover {
+            background: #3a3a55;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #ff9800;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #ffa726;
+        }
+
+        select {
+            padding: 8px;
+            margin-top: 10px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game">
+    <h1>Tic Tac Toe</h1>
+
+    <select id="mode">
+        <option value="pvp">Player vs Player</option>
+        <option value="ai">Player vs AI</option>
+    </select>
+
+    <div class="board" id="board"></div>
+
+    <div class="status" id="status">Player X's turn</div>
+
+    <button onclick="resetGame()">Restart</button>
+</div>
+
+<script>
+    const board = document.getElementById("board");
+    const statusText = document.getElementById("status");
+    const modeSelect = document.getElementById("mode");
+
+    let currentPlayer = "X";
+    let gameActive = true;
+    let gameState = ["", "", "", "", "", "", "", "", ""];
+
+    const winConditions = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+    ];
+
+    function createBoard() {
+        board.innerHTML = "";
+        gameState.forEach((_, index) => {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.addEventListener("click", () => handleClick(index));
+            board.appendChild(cell);
+        });
+    }
+
+    function handleClick(index) {
+        if (!gameActive || gameState[index] !== "") return;
+
+        gameState[index] = currentPlayer;
+        updateBoard();
+        checkResult();
+
+        if (gameActive) {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            statusText.textContent = `Player ${currentPlayer}'s turn`;
+
+            if (modeSelect.value === "ai" && currentPlayer === "O") {
+                setTimeout(aiMove, 500);
+            }
+        }
+    }
+
+    function aiMove() {
+        let emptyCells = gameState
+            .map((val, idx) => val === "" ? idx : null)
+            .filter(v => v !== null);
+
+        if (emptyCells.length === 0) return;
+
+        const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        gameState[randomIndex] = "O";
+        updateBoard();
+        checkResult();
+
+        if (gameActive) {
+            currentPlayer = "X";
+            statusText.textContent = "Player X's turn";
+        }
+    }
+
+    function updateBoard() {
+        document.querySelectorAll(".cell").forEach((cell, index) => {
+            cell.textContent = gameState[index];
+        });
+    }
+
+    function checkResult() {
+        for (let condition of winConditions) {
+            const [a, b, c] = condition;
+            if (
+                gameState[a] &&
+                gameState[a] === gameState[b] &&
+                gameState[a] === gameState[c]
+            ) {
+                statusText.textContent = `Player ${gameState[a]} Wins! 🎉`;
+                gameActive = false;
+                return;
+            }
+        }
+
+        if (!gameState.includes("")) {
+            statusText.textContent = "It's a Draw 🤝";
+            gameActive = false;
+        }
+    }
+
+    function resetGame() {
+        gameState = ["", "", "", "", "", "", "", "", ""];
+        currentPlayer = "X";
+        gameActive = true;
+        statusText.textContent = "Player X's turn";
+        createBoard();
+    }
+
+    createBoard();
+</script>
+
+</body>
+</html>
